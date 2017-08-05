@@ -1,0 +1,23 @@
+{
+  "name": "express_test",
+  "version": "1.0.0",
+  "description": "trying to create API",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "method-override": "^2.3.9",
+    "mongoose": "^4.11.5",
+    "morgan": "^1.8.2",
+    "nconf": "^0.8.4",
+    "serve-favicon": "^2.4.3",
+    "winston": "^2.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "author": "roman ushakov",
+  "license": "ISC"
+}
