@@ -26,7 +26,7 @@ app.get('/api', function(req, res) {
 });
 
 app.get('/api/missions', function(req, res) {
-    return MissionModel.find(function (err, missions) {
+    return MissionModel.find(req.query, function (err, missions) {
         if (!err) {
             return res.send(missions);
         } else {
