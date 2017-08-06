@@ -15,6 +15,12 @@ app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(methodOverride());
 
+app.all('/api/missions', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
+
 app.get('/api', function(req, res) {
     res.send('Api is running');
 });
@@ -33,9 +39,12 @@ app.get('/api/missions', function(req, res) {
 
 app.post('/api/missions', function(req, res) {
     var mission = new MissionModel({
-        title: req.body.title,
+        mission_name: req.body.mission_name,
+        mission_description: req.body.mission_description,
+        project: req.body.project,
+        game: req.body.game,
         author: req.body.author,
-        description: req.body.description,
+        date_of: req.body.date_of,
         images: req.body.images
     });
 
@@ -81,8 +90,11 @@ app.put('/api/missions/:id', function(req, res) {
             return res.send({error: 'Not found' });
         }
 
-        mission.title = req.body.title;
-        mission.description = req.body.description;
+        mission.mission_name = req.body.mission_name;
+        mission.mission_description = req.body.mission_description;
+        mission.game = req.body.game;
+        mission.project = req.body.project;
+        mission.date_of = req.body.date_of
         mission.author = req.body.author;
         mission.images = req.body.images;
         return mission.save(function (err) {

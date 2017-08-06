@@ -15,25 +15,30 @@ db.once('open', function callback () {
 var Schema = mongoose.Schema;
 
 // Schemas
-var Images = new Schema({
-    kind: {
-        type: String,
-        enum: ['thumbnail', 'detail'],
-        required: true
-    },
-    url: { type: String, required: true }
-});
 
 var Missions = new Schema({
-    title: { type: String, required: true},
-    author: { type: String, required: true},
-    description: { type: String, required: true},
-    images: [Images],
-    released: { type: Date, default: Date.now }
-});
-
-Missions.path('title').validate(function (v) {
-    return v.length > 5 && v.length < 70;
+    mission_name: { type: String, required: true},
+    mission_description: { type: String },
+    project: { 
+        type: String, 
+        enum: ['wog', 'miniwog'],
+        required: true 
+    },
+    game: { 
+        type: String, 
+        enum: ['arma2', 'arma3'],
+        required: true 
+    },
+    author: { type: String },
+    date_of: {
+        type: Date,
+        default: Date.now()
+    },
+    images: {
+        thumbnail: {
+            type: String
+        }
+    }
 });
 
 var MissionModel = mongoose.model('Missions', Missions);
