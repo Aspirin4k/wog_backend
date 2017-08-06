@@ -34,10 +34,8 @@ var Missions = new Schema({
         type: Date,
         default: Date.now()
     },
-    images: {
-        thumbnail: {
-            type: String
-        }
+    thumbnail: {
+        type: String
     }
 });
 

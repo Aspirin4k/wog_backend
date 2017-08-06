@@ -45,7 +45,7 @@ app.post('/api/missions', function(req, res) {
         game: req.body.game,
         author: req.body.author,
         date_of: req.body.date_of,
-        images: req.body.images
+        thumbnail: req.body.thumbnail
     });
 
     mission.save(function (err) {
@@ -96,7 +96,7 @@ app.put('/api/missions/:id', function(req, res) {
         mission.project = req.body.project;
         mission.date_of = req.body.date_of
         mission.author = req.body.author;
-        mission.images = req.body.images;
+        mission.thumbnail = req.body.thumbnail;
         return mission.save(function (err) {
             if (!err) {
                 log.info('MissionModel updated');
