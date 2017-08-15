@@ -1,4 +1,5 @@
 var express         = require('express');
+var cors            = require('cors');
 var path            = require('path');
 var favicon         = require('serve-favicon');
 var morgan          = require('morgan');
@@ -14,26 +15,38 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(methodOverride());
+app.use(cors());
 
-app.all('/api/missions', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
- });
+// app.all('/api/missions', function(req, res, next) {
+//     console.log(req);
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+//     res.header('Access-Control-Max-Age: 1000');
+//     res.header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+//     next();
+//  });
 
 app.get('/api', function(req, res) {
     res.send('Api is running');
 });
 
 app.get('/api/missions', function(req, res) {
-    return MissionModel.find(req.query, function (err, missions) {
-        if (!err) {
-            return res.send(missions);
-        } else {
-            res.statusCode = 500;
-            log.error('Internal error(%d): %s', res.statusCode, err.message);
-            return res.send({ error: 'Server error'});
-        }
+    return MissionModel.find( 
+        req.query,
+        ['_id','mission_name','mission_description','project','game','thumbnail'],
+        {
+            sort: {
+                date_of: -1
+            }
+        },
+        function (err, missions) {
+            if (!err) {
+                return res.send(missions);
+            } else {
+                res.statusCode = 500;
+                log.error('Internal error(%d): %s', res.statusCode, err.message);
+                return res.send({ error: 'Server error'});
+            }
     });
 });
 
@@ -43,9 +56,13 @@ app.post('/api/missions', function(req, res) {
         mission_description: req.body.mission_description,
         project: req.body.project,
         game: req.body.game,
-        author: req.body.author,
         date_of: req.body.date_of,
-        thumbnail: req.body.thumbnail
+        thumbnail: req.body.thumbnail,
+        task_blue: req.body.task_blue,
+        task_red: req.body.task_red,
+        task_green: req.body.task_green,
+        conventions: req.body.conventions,
+        screenshots: req.body.screenshots
     });
 
     mission.save(function (err) {

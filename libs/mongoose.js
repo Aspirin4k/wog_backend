@@ -36,7 +36,20 @@ var Missions = new Schema({
     },
     thumbnail: {
         type: String
-    }
+    },
+    task_blue: {
+        type: String
+    },
+    task_red: {
+        type: String
+    },
+    task_green: {
+        type: String
+    },
+    conventions: {
+        type: String
+    },
+    screenshots: [String]
 });
 
 var MissionModel = mongoose.model('Missions', Missions);
