@@ -111,9 +111,12 @@ app.put('/api/missions/:id', function(req, res) {
         mission.mission_description = req.body.mission_description;
         mission.game = req.body.game;
         mission.project = req.body.project;
-        mission.date_of = req.body.date_of
-        mission.author = req.body.author;
+        mission.date_of = req.body.date_of;
         mission.thumbnail = req.body.thumbnail;
+        mission.task_blue = req.body.task_blue;
+        mission.task_green = req.body.task_green;
+        mission.task_red = req.body.task_red;
+        mission.screenshots = req.body.screenshots;
         return mission.save(function (err) {
             if (!err) {
                 log.info('MissionModel updated');
