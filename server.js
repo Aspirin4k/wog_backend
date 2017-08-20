@@ -7,13 +7,15 @@ var bodyParser      = require('body-parser');
 var methodOverride  = require('method-override');
 var log             = require('./libs/log')(module);
 var config          = require('./libs/config');
-var MissionModel = require('./libs/mongoose').MissionModel;
+var MissionModel    = require('./libs/mongoose').MissionModel;
+var sha1            = require('js-sha1');
+var axios           = require('axios');
 
 var app = express();
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan('tiny'));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '10mb'}));
 app.use(methodOverride());
 app.use(cors());
 
@@ -28,6 +30,41 @@ app.use(cors());
 
 app.get('/api', function(req, res) {
     res.send('Api is running');
+});
+
+app.post('/api/images', function(req,res) {
+    if (!req.body.image)
+    {
+        res.statusCode = 400;
+        res.send({ error: 'no image data'});
+    }
+
+    var hash = sha1.create();
+    var timestamp = new Date().getTime();
+    var query = 'timestamp=' + timestamp + config.get('cloudinary:secret');
+    hash.update(query);
+
+    axios.post(
+        config.get('cloudinary:url'),
+        {
+            file: req.body.image,
+            api_key: config.get('cloudinary:key'),
+            timestamp: timestamp,
+            signature: hash.hex()
+        }
+    )
+    .then((img_res) => {
+        res.send({
+            status: 'OK',
+            url: img_res.data.url
+        });
+    })
+    .catch((img_err) => {
+        res.statusCode = 400;
+        res.send({
+            error: img_err.response ? img_err.response.statusText : img_err.message
+        })
+    })
 });
 
 app.get('/api/missions', function(req, res) {

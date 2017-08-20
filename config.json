@@ -2,5 +2,10 @@
     "port" : 1337,
     "mongoose": {
         "uri": "mongodb://localhost/test1"
+    },
+    "cloudinary": {
+        "url": "https://api.cloudinary.com/v1_1/dacpvzkym/image/upload",
+        "key": "774224564777463",
+        "secret": "19zOjRs7lFV-Hl5cD48MDFPFKes"
     }
 }
