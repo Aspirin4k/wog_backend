@@ -70,13 +70,14 @@ app.post('/api/images', function(req,res) {
 app.get('/api/missions', function(req, res) {
     return MissionModel.find( 
         req.query,
-        ['_id','mission_name','mission_description','project','game','thumbnail'],
+        ['_id','mission_name','mission_description','project','game','thumbnail', 'date_of'],
         {
             sort: {
                 date_of: -1
             }
         },
         function (err, missions) {
+            console.log(missions);
             if (!err) {
                 return res.send(missions);
             } else {
