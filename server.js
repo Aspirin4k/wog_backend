@@ -155,6 +155,7 @@ app.put('/api/missions/:id', function(req, res) {
         mission.task_green = req.body.task_green;
         mission.task_red = req.body.task_red;
         mission.screenshots = req.body.screenshots;
+	mission.conventions = req.body.conventions;
         return mission.save(function (err) {
             if (!err) {
                 log.info('MissionModel updated');
